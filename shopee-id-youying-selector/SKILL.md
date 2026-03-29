@@ -78,6 +78,16 @@ Do not commit browser state, cookies, or exported business data unless the user 
 
 If the environment has no terminal access and only exposes an AI chat box, the user can provide credentials and runtime parameters directly in the conversation.
 
+Quick prompt:
+
+```text
+Use $shopee-id-youying-selector.
+友鹰账号：<账号>
+友鹰密码：<密码>
+时间范围：2025-09-28 到 2026-03-27
+按件数降序，筛选 Shopee 印尼 Otomotif 类目前10个产品，排除 Shopee Mall 和评分低于 4.7 的商品，导出 Excel。
+```
+
 Recommended dialog format:
 
 ```text
