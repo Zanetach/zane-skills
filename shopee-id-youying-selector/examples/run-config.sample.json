@@ -1,6 +1,11 @@
 {
   "username": "YOUR_USERNAME",
   "password": "YOUR_PASSWORD",
+  "site": "Indonesia",
+  "site_presets_file": "/Users/zane/Documents/Coderepo/skills/shopee-id-youying-selector/examples/site-presets.sample.json",
+  "site_label": "印度尼西亚",
+  "country_code": 2,
+  "category_tree_country": "Indonesia",
   "start_date": "2025-09-28",
   "end_date": "2026-03-27",
   "output": "/Users/zane/Documents/Coderepo/skills/shopee-id-youying-selector/examples/result.xlsx",

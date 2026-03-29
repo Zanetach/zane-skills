@@ -1,15 +1,15 @@
 ---
 name: shopee-id-youying-selector
-description: Automate product selection on YouYing Data for Shopee Indonesia. Use when the user wants to log into youyingshuju.com, switch to Shopee Indonesia, filter the Otomotif category, apply sales/price/date constraints, exclude Shopee Mall and low-rating items, and export the top products to Excel.
+description: Automate product selection on YouYing Data for Shopee sites, defaulting to Indonesia. Use when the user wants to log into youyingshuju.com, choose a Shopee site, filter a category, apply sales/price/date constraints, exclude Shopee Mall and low-rating items, and export the top products to Excel.
 ---
 
 # Shopee ID YouYing Selector
 
-Use this skill when the task is to automate YouYing Data product selection for Shopee Indonesia and export the result to Excel.
+Use this skill when the task is to automate YouYing Data product selection for Shopee and export the result to Excel. The default site preset is Indonesia.
 
 ## Scope
 
-This workflow targets the user's current rule set:
+This workflow targets the user's current default rule set:
 
 - Data source: `友鹰数据`
 - Platform: `Shopee`
@@ -38,6 +38,8 @@ Unless the user overrides them, use these defaults:
 
 - `platform`: `Shopee`
 - `site`: `印度尼西亚`
+- `country_code`: `2`
+- `category_tree_country`: `Indonesia`
 - `category`: `Otomotif`
 - `min_monthly_sales`: `50`
 - `min_price_idr`: `80000`
@@ -51,6 +53,46 @@ The date range must always come from the user input for that run:
 
 - `start_date`
 - `end_date`
+
+For non-Indonesia sites, also provide:
+
+- `site`
+- `site_presets_file` if you want reusable custom presets
+- `site_label`
+- `country_code`
+- `category_tree_country`
+
+Current built-in preset:
+
+- `Indonesia` / `印度尼西亚` / `印尼`
+- `Thailand` / `泰国`
+- `Philippines` / `菲律宾`
+- `Malaysia` / `马来西亚`
+- `Singapore` / `新加坡`
+- `Vietnam` / `越南`
+- `Taiwan` / `台湾`
+- `Brazil` / `巴西`
+- `Mexico` / `墨西哥`
+- `Columbia` / `哥伦比亚`
+- `Poland` / `波兰`
+- `Chile` / `智利`
+
+Notes:
+
+- `Indonesia` currently has a confirmed built-in `country_code=2`
+- `Malaysia` currently has a confirmed built-in `country_code=1`
+- `Thailand` currently has a confirmed built-in `country_code=3`
+- `Philippines` currently has a confirmed built-in `country_code=4`
+- `Taiwan` currently has a confirmed built-in `country_code=5`
+- `Singapore` currently has a confirmed built-in `country_code=6`
+- `Vietnam` currently has a confirmed built-in `country_code=7`
+- `Brazil` currently has a confirmed built-in `country_code=8`
+- `Chile` currently has a confirmed built-in `country_code=9`
+- `Mexico` currently has a confirmed built-in `country_code=11`
+- `Columbia` currently has a confirmed built-in `country_code=12`
+- `Poland` currently only has a confirmed public category path; if it appears in your live menu, still verify its `country_code` before first use
+
+For other Shopee sites outside this list, pass explicit `country_code` and `category_tree_country`, or register them in a custom site presets JSON file.
 
 For Mall filtering, support these modes:
 
@@ -119,8 +161,8 @@ After manual login completes, future runs can reuse the same profile without ask
 
 1. Open the site and confirm login state.
 2. Navigate to the Shopee data area.
-3. Switch site to `印度尼西亚`.
-4. Set category to `Otomotif`.
+3. Switch site to the requested Shopee site. Default: `印度尼西亚`.
+4. Set the requested category. Default: `Otomotif`.
 5. Apply filters for monthly sales, price, and recent half-year listing window.
 6. Sort by sales quantity descending.
 7. Inspect each candidate in order and reject:
@@ -196,6 +238,7 @@ Use the integrated script when you want to log in, query, and export in one step
 python3 scripts/select_products.py \
   --username 'YOUR_USERNAME' \
   --password 'YOUR_PASSWORD' \
+  --site 'Indonesia' \
   --start-date '2025-09-28' \
   --end-date '2026-03-27' \
   --output examples/result.xlsx \
@@ -210,12 +253,28 @@ python3 scripts/select_products.py --config examples/run-config.sample.json
 
 The preset configs under `examples/run-config.strict.json`, `examples/run-config.loose.json`, and `examples/run-config.custom-safe.json` intentionally omit credentials. Pair them with environment variables or provide `--username` and `--password` at runtime.
 
+To add non-default site presets, use:
+
+```json
+{
+  "Thailand": {
+    "site_name": "Thailand",
+    "site_label": "泰国",
+    "country_code": 999,
+    "category_tree_country": "Thailand"
+  }
+}
+```
+
+The bundled [examples/site-presets.sample.json](/Users/zane/Documents/Coderepo/skills/shopee-id-youying-selector/examples/site-presets.sample.json) uses placeholder values like `999`. Replace them with confirmed values from your own YouYing environment before running.
+
 For safer credential handling, prefer environment variables:
 
 ```bash
 YOUYING_USERNAME='YOUR_USERNAME' \
 YOUYING_PASSWORD='YOUR_PASSWORD' \
 python3 scripts/select_products.py \
+  --site 'Indonesia' \
   --start-date '2025-09-28' \
   --end-date '2026-03-27' \
   --output examples/result.xlsx \
@@ -227,6 +286,11 @@ The integrated script also supports:
 - `--max-pages`: cap how many API pages are scanned
 - `--request-retry-limit`: retry count for each API request
 - `--run-retry-limit`: full-run retry count with automatic re-login
+- `--site`: Shopee site preset, default `Indonesia`
+- `--site-presets-file`: custom site preset JSON
+- `--site-label`: label written into the Excel output
+- `--country-code`: explicit YouYing API country code for non-default sites
+- `--category-tree-country`: explicit category JSON country segment for non-default sites
 - `--mall-filter-mode`: `strict | loose | custom | none`
 - `--mall-keywords`: custom blocked keywords
 - `--mall-exclude-keywords`: custom allowlist keywords
@@ -280,7 +344,7 @@ python3 scripts/manage_blacklist.py \
 
 - `scripts/export_excel.py`: write normalized rows into `.xlsx`
 - `scripts/create_template.py`: generate a blank template workbook
-- `scripts/select_products.py`: log into YouYing, query Shopee Indonesia products, and export the fixed Excel format
+- `scripts/select_products.py`: log into YouYing, query Shopee site products, and export the fixed Excel format
 - `scripts/batch_select_products.py`: run multiple date-range jobs and export one Excel/JSON pair per range
 - `scripts/merge_batch_results.py`: merge multiple batch outputs into one workbook
 - `scripts/manage_blacklist.py`: add or remove persistent blacklist entries
@@ -288,6 +352,7 @@ python3 scripts/manage_blacklist.py \
 - `examples/batch-config.sample.json`: sample batch configuration for multiple date ranges
 - `examples/blacklist.sample.json`: sample blacklist for merge-time filtering
 - `examples/blacklist.persistent.json`: persistent blacklist file for ongoing use
+- `examples/site-presets.sample.json`: sample custom site preset file for non-default Shopee sites
 - `examples/run-config.strict.json`: strict Mall filtering preset
 - `examples/run-config.loose.json`: loose Mall filtering preset
 - `examples/run-config.custom-safe.json`: recommended configurable Mall filtering preset

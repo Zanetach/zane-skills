@@ -1,0 +1,26 @@
+{
+  "Thailand": {
+    "site_name": "Thailand",
+    "site_label": "泰国",
+    "country_code": 999,
+    "category_tree_country": "Thailand"
+  },
+  "泰国": {
+    "site_name": "Thailand",
+    "site_label": "泰国",
+    "country_code": 999,
+    "category_tree_country": "Thailand"
+  },
+  "Philippines": {
+    "site_name": "Philippines",
+    "site_label": "菲律宾",
+    "country_code": 999,
+    "category_tree_country": "Philippines"
+  },
+  "Malaysia": {
+    "site_name": "Malaysia",
+    "site_label": "马来西亚",
+    "country_code": 999,
+    "category_tree_country": "Malaysia"
+  }
+}

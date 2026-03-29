@@ -36,6 +36,157 @@ PLACEHOLDER_CREDENTIAL_VALUES = {
     "<password>",
 }
 
+SITE_PRESETS = {
+    "indonesia": {
+        "site_name": "Indonesia",
+        "site_label": "印度尼西亚",
+        "country_code": 2,
+        "category_tree_country": "Indonesia",
+    },
+    "印尼": {
+        "site_name": "Indonesia",
+        "site_label": "印度尼西亚",
+        "country_code": 2,
+        "category_tree_country": "Indonesia",
+    },
+    "印度尼西亚": {
+        "site_name": "Indonesia",
+        "site_label": "印度尼西亚",
+        "country_code": 2,
+        "category_tree_country": "Indonesia",
+    },
+    "thailand": {
+        "site_name": "Thailand",
+        "site_label": "泰国",
+        "country_code": 3,
+        "category_tree_country": "Thailand",
+    },
+    "泰国": {
+        "site_name": "Thailand",
+        "site_label": "泰国",
+        "country_code": 3,
+        "category_tree_country": "Thailand",
+    },
+    "philippines": {
+        "site_name": "Philippines",
+        "site_label": "菲律宾",
+        "country_code": 4,
+        "category_tree_country": "Philippines",
+    },
+    "菲律宾": {
+        "site_name": "Philippines",
+        "site_label": "菲律宾",
+        "country_code": 4,
+        "category_tree_country": "Philippines",
+    },
+    "malaysia": {
+        "site_name": "Malaysia",
+        "site_label": "马来西亚",
+        "country_code": 1,
+        "category_tree_country": "Malaysia",
+    },
+    "马来西亚": {
+        "site_name": "Malaysia",
+        "site_label": "马来西亚",
+        "country_code": 1,
+        "category_tree_country": "Malaysia",
+    },
+    "singapore": {
+        "site_name": "Singapore",
+        "site_label": "新加坡",
+        "country_code": 6,
+        "category_tree_country": "Singapore",
+    },
+    "新加坡": {
+        "site_name": "Singapore",
+        "site_label": "新加坡",
+        "country_code": 6,
+        "category_tree_country": "Singapore",
+    },
+    "vietnam": {
+        "site_name": "Vietnam",
+        "site_label": "越南",
+        "country_code": 7,
+        "category_tree_country": "Vietnam",
+    },
+    "越南": {
+        "site_name": "Vietnam",
+        "site_label": "越南",
+        "country_code": 7,
+        "category_tree_country": "Vietnam",
+    },
+    "taiwan": {
+        "site_name": "Taiwan",
+        "site_label": "台湾",
+        "country_code": 5,
+        "category_tree_country": "Taiwan",
+    },
+    "台湾": {
+        "site_name": "Taiwan",
+        "site_label": "台湾",
+        "country_code": 5,
+        "category_tree_country": "Taiwan",
+    },
+    "brazil": {
+        "site_name": "Brazil",
+        "site_label": "巴西",
+        "country_code": 8,
+        "category_tree_country": "Brazil",
+    },
+    "巴西": {
+        "site_name": "Brazil",
+        "site_label": "巴西",
+        "country_code": 8,
+        "category_tree_country": "Brazil",
+    },
+    "mexico": {
+        "site_name": "Mexico",
+        "site_label": "墨西哥",
+        "country_code": 11,
+        "category_tree_country": "Mexico",
+    },
+    "墨西哥": {
+        "site_name": "Mexico",
+        "site_label": "墨西哥",
+        "country_code": 11,
+        "category_tree_country": "Mexico",
+    },
+    "columbia": {
+        "site_name": "Columbia",
+        "site_label": "哥伦比亚",
+        "country_code": 12,
+        "category_tree_country": "Columbia",
+    },
+    "哥伦比亚": {
+        "site_name": "Columbia",
+        "site_label": "哥伦比亚",
+        "country_code": 12,
+        "category_tree_country": "Columbia",
+    },
+    "poland": {
+        "site_name": "Poland",
+        "site_label": "波兰",
+        "category_tree_country": "Poland",
+    },
+    "波兰": {
+        "site_name": "Poland",
+        "site_label": "波兰",
+        "category_tree_country": "Poland",
+    },
+    "chile": {
+        "site_name": "Chile",
+        "site_label": "智利",
+        "country_code": 9,
+        "category_tree_country": "Chile",
+    },
+    "智利": {
+        "site_name": "Chile",
+        "site_label": "智利",
+        "country_code": 9,
+        "category_tree_country": "Chile",
+    },
+}
+
 
 def normalize_text(value) -> str:
     if value is None:
@@ -135,9 +286,62 @@ def load_config(path: str | None) -> dict:
     return data
 
 
+def load_site_presets(path: str | None) -> dict:
+    if not path:
+        return {}
+    with Path(path).open("r", encoding="utf-8") as handle:
+        data = json.load(handle)
+    if not isinstance(data, dict):
+        raise SystemExit("Site presets JSON must be an object.")
+    normalized = {}
+    for key, value in data.items():
+        if not isinstance(value, dict):
+            raise SystemExit(f"Site preset {key} must be an object.")
+        normalized[str(key)] = value
+        normalized[str(key).lower()] = value
+    return normalized
+
+
+def resolve_site_config(
+    site: str,
+    country_code: int | None,
+    category_tree_country: str | None,
+    site_label: str | None,
+    extra_site_presets: dict | None = None,
+) -> dict:
+    normalized = (site or "").strip()
+    merged_presets = dict(SITE_PRESETS)
+    if extra_site_presets:
+        merged_presets.update(extra_site_presets)
+    preset = merged_presets.get(normalized.lower()) or merged_presets.get(normalized)
+
+    resolved_site_name = preset["site_name"] if preset else normalized
+    resolved_site_label = site_label or (preset["site_label"] if preset else normalized)
+    resolved_country_code = country_code if country_code is not None else (preset.get("country_code") if preset else None)
+    resolved_category_tree_country = (
+        category_tree_country
+        or (preset.get("category_tree_country") if preset else normalized)
+    )
+
+    if resolved_country_code is None:
+        raise SystemExit(
+            f"站点 {resolved_site_name} 的类目路径已内置，但 country_code 尚未确认。"
+            " 请通过 --country-code、配置文件或自定义 site preset 提供。"
+        )
+    if not resolved_category_tree_country:
+        raise SystemExit("必须提供 category_tree_country。")
+
+    return {
+        "site_name": resolved_site_name,
+        "site_label": resolved_site_label,
+        "country_code": resolved_country_code,
+        "category_tree_country": resolved_category_tree_country,
+    }
+
+
 def build_page_results_script() -> str:
     return """
-    async ({startDate, endDate, limit, minSold, minPrice, minRating, categoryKeyword, today, maxPages, requestRetryLimit, mallFilterMode, mallKeywords, mallExcludeKeywords}) => {
+    async ({startDate, endDate, limit, minSold, minPrice, minRating, categoryKeyword, defaultCategoryName, today, maxPages, requestRetryLimit, mallFilterMode, mallKeywords, mallExcludeKeywords, countryCode, categoryTreeCountry, siteLabel}) => {
       const root = document.querySelector("#app").__vue__;
       let target = null;
       const seen = new Set();
@@ -155,7 +359,7 @@ def build_page_results_script() -> str:
         throw new Error("未找到商品搜索组件");
       }
 
-      const categoryTree = await fetch(location.origin + "/category/shopee/Indonesia/data/category.json").then(r => r.json());
+      const categoryTree = await fetch(location.origin + `/category/shopee/${categoryTreeCountry}/data/category.json`).then(r => r.json());
       const category = categoryTree.find(item => {
         const text = `${item.cname || ""} ${item.cnameCn || ""}`.toLowerCase();
         return text.includes(categoryKeyword.toLowerCase());
@@ -195,7 +399,7 @@ def build_page_results_script() -> str:
           approvedDateEnd: "",
           approvedDateStart: "",
           cids: [category.cid],
-          country: 2,
+          country: countryCode,
           genTimeEnd: endDate,
           genTimeStart: startDate,
           index,
@@ -262,8 +466,8 @@ def build_page_results_script() -> str:
           selected.push({
             "产品名称": item.title || "",
             "产品链接": `https://shopee.co.id/product/${item.shopId}/${item.pid}`,
-            "站点": "印度尼西亚",
-            "类目": item.categoryStructure || "Otomotif",
+            "站点": siteLabel,
+            "类目": item.categoryStructure || defaultCategoryName,
             "月销量": item.sold || 0,
             "价格(IDR)": item.price || 0,
             "评分": item.rating || 0,
@@ -318,12 +522,16 @@ def collect_once(page, args: argparse.Namespace) -> dict:
             "minPrice": args.min_price,
             "minRating": args.min_rating,
             "categoryKeyword": args.category_keyword,
+            "defaultCategoryName": args.category_keyword,
             "today": args.capture_date,
             "maxPages": args.max_pages,
             "requestRetryLimit": args.request_retry_limit,
             "mallFilterMode": args.mall_filter_mode,
             "mallKeywords": args.mall_keywords,
             "mallExcludeKeywords": args.mall_exclude_keywords,
+            "countryCode": args.country_code,
+            "categoryTreeCountry": args.category_tree_country,
+            "siteLabel": args.site_label,
         },
     )
 
@@ -360,6 +568,10 @@ def login_and_collect(args: argparse.Namespace) -> tuple[list[dict], dict]:
         )
     summary = {
         "capture_date": args.capture_date,
+        "site_name": args.site_name,
+        "site_label": args.site_label,
+        "country_code": args.country_code,
+        "category_tree_country": args.category_tree_country,
         "start_date": args.start_date,
         "end_date": args.end_date,
         "limit": args.limit,
@@ -383,10 +595,18 @@ def login_and_collect(args: argparse.Namespace) -> tuple[list[dict], dict]:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Select Shopee Indonesia products from YouYing and export to Excel.")
+    parser = argparse.ArgumentParser(description="Select Shopee products from YouYing and export to Excel.")
     parser.add_argument("--config", help="Optional JSON config file for login, filters, and output settings.")
     parser.add_argument("--username", help="YouYing account username.")
     parser.add_argument("--password", help="YouYing account password.")
+    parser.add_argument("--site", default="Indonesia", help="Shopee site preset name. Default: Indonesia.")
+    parser.add_argument("--site-presets-file", help="Optional JSON file containing custom site presets.")
+    parser.add_argument("--site-label", help="Label written into the Excel output, e.g. 印度尼西亚.")
+    parser.add_argument("--country-code", type=int, help="YouYing API country code. Required for non-default sites.")
+    parser.add_argument(
+        "--category-tree-country",
+        help="Country segment used in /category/shopee/<country>/data/category.json. Required for non-default sites.",
+    )
     parser.add_argument("--start-date", help="Listing start date, YYYY-MM-DD.")
     parser.add_argument("--end-date", help="Listing end date, YYYY-MM-DD.")
     parser.add_argument("--output", help="Output xlsx path.")
@@ -395,7 +615,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min-monthly-sales", type=int, default=50, help="Minimum monthly sales.")
     parser.add_argument("--min-price", type=int, default=80000, help="Minimum price in IDR.")
     parser.add_argument("--min-rating", type=float, default=4.7, help="Minimum rating.")
-    parser.add_argument("--category-keyword", default="Otomotif", help="Category keyword to match in the Indonesia category tree.")
+    parser.add_argument("--category-keyword", default="Otomotif", help="Category keyword to match in the selected site's category tree.")
     parser.add_argument("--max-pages", type=int, default=25, help="Maximum API pages to scan before stopping.")
     parser.add_argument("--request-retry-limit", type=int, default=3, help="Retries for each product-list API request.")
     parser.add_argument("--run-retry-limit", type=int, default=2, help="Retries for the whole run, including re-login.")
@@ -434,6 +654,11 @@ def parse_args() -> argparse.Namespace:
     for key in [
         "username",
         "password",
+        "site",
+        "site_presets_file",
+        "site_label",
+        "country_code",
+        "category_tree_country",
         "start_date",
         "end_date",
         "output",
@@ -467,6 +692,18 @@ def parse_args() -> argparse.Namespace:
     if not args.password or is_placeholder_credential(args.password):
         args.password = os.getenv("YOUYING_PASSWORD")
     args.chrome_path = detect_chrome_path(args.chrome_path)
+    site_presets = load_site_presets(args.site_presets_file)
+    site_config = resolve_site_config(
+        args.site,
+        args.country_code,
+        args.category_tree_country,
+        args.site_label,
+        site_presets,
+    )
+    args.site_name = site_config["site_name"]
+    args.site_label = site_config["site_label"]
+    args.country_code = site_config["country_code"]
+    args.category_tree_country = site_config["category_tree_country"]
 
     if not args.username or not args.password or not args.start_date or not args.end_date or not args.output:
         raise SystemExit(

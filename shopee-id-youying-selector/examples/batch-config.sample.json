@@ -4,6 +4,11 @@
   "shared": {
     "username": "YOUR_USERNAME",
     "password": "YOUR_PASSWORD",
+    "site": "Indonesia",
+    "site_presets_file": "/Users/zane/Documents/Coderepo/skills/shopee-id-youying-selector/examples/site-presets.sample.json",
+    "site_label": "印度尼西亚",
+    "country_code": 2,
+    "category_tree_country": "Indonesia",
     "capture_date": "2026-03-29",
     "limit": 10,
     "min_monthly_sales": 50,
