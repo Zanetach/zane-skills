@@ -1,0 +1,7 @@
+*.xlsx
+*.json
+!examples/*.json
+!examples/shopee_id_otomotif_template.xlsx
+browser-state/
+auth/
+downloads/
