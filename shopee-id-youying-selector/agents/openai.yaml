@@ -1,4 +1,4 @@
 interface:
-  display_name: "Shopee ID Selector"
+  display_name: "Shopee Multi-Site Selector"
   short_description: "从友鹰数据筛选 Shopee 站点商品并导出 Excel，默认印尼"
   default_prompt: "Use $shopee-id-youying-selector to log into YouYing, query Shopee site products for a date range, and export the results to Excel. Default site: Indonesia."
