@@ -17,15 +17,16 @@ Quick use:
 Use $shopee-id-youying-selector.
 友鹰账号：<账号>
 友鹰密码：<密码>
+站点：菲律宾
 时间范围：2025-09-28 到 2026-03-27
-按件数降序，筛选 Shopee 印尼 Otomotif 类目前10个产品，排除 Shopee Mall 和评分低于 4.7 的商品，导出 Excel。
+按件数降序，筛选 Shopee 站点 Otomotif 类目前10个产品，排除 Shopee Mall 和评分低于 4.7 的商品，导出 Excel。
 ```
 
 ## Skills
 
 | Skill | Purpose |
 | --- | --- |
-| `shopee-id-youying-selector` | Automate product selection on YouYing Data for Shopee Indonesia and export results to Excel. |
+| `shopee-id-youying-selector` | Automate product selection on YouYing Data for Shopee sites and export results to Excel. Default site: Indonesia. |
 
 ## Repository Structure
 
