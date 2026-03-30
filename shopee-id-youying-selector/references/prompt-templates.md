@@ -6,7 +6,7 @@
 
 ```text
 Use $shopee-id-youying-selector.
-登录友鹰，跑 Shopee 指定站点的类目选品。默认示例是印度尼西亚站点的 Otomotif 类目。
+登录友鹰，跑 Shopee 指定站点的类目选品。默认示例是印度尼西亚站点的 Otomotif 类目，但类目可替换。
 站点：菲律宾
 类目：Beauty
 时间范围：2025-09-28 到 2026-03-27。
@@ -30,7 +30,7 @@ Use $shopee-id-youying-selector.
 
 ```text
 Use $shopee-id-youying-selector.
-按批量日期任务运行 Shopee 指定站点选品。默认示例是印度尼西亚 Otomotif。
+按批量日期任务运行 Shopee 指定站点选品。默认示例是印度尼西亚 Otomotif，但类目可替换。
 日期范围有：
 1. 2025-09-28 到 2026-03-27
 2. 2025-10-01 到 2026-03-01
@@ -52,7 +52,7 @@ Use $shopee-id-youying-selector.
 ### Single Range
 
 ```text
-Use $shopee-id-youying-selector to log into YouYing and run Shopee site product selection. Default example: Indonesia Otomotif.
+Use $shopee-id-youying-selector to log into YouYing and run Shopee site product selection. Default example: Indonesia Otomotif, but the category is configurable.
 Site: Philippines
 Category: Beauty
 Date range: 2025-09-28 to 2026-03-27.

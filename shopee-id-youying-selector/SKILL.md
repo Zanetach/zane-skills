@@ -261,6 +261,12 @@ python3 scripts/select_products.py --config examples/run-config.sample.json
 
 The preset configs under `examples/run-config.strict.json`, `examples/run-config.loose.json`, and `examples/run-config.custom-safe.json` intentionally omit credentials. Pair them with environment variables or provide `--username` and `--password` at runtime.
 
+If you want a non-`Otomotif` example, use:
+
+```bash
+python3 scripts/select_products.py --config examples/run-config.beauty.sample.json
+```
+
 To add non-default site presets, use:
 
 ```json
@@ -364,6 +370,7 @@ python3 scripts/manage_blacklist.py \
 - `examples/run-config.strict.json`: strict Mall filtering preset
 - `examples/run-config.loose.json`: loose Mall filtering preset
 - `examples/run-config.custom-safe.json`: recommended configurable Mall filtering preset
+- `examples/run-config.beauty.sample.json`: non-`Otomotif` sample showing category override
 - `examples/products.sample.json`: sample row payload
 - `references/prompt-templates.md`: ready-to-use native AI skill prompt templates
 - `references/mall-filter-presets.md`: guidance for choosing Mall filtering behavior
