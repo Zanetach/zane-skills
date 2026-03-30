@@ -14,7 +14,7 @@ This workflow targets the user's current default rule set:
 - Data source: `友鹰数据`
 - Platform: `Shopee`
 - Site: `印度尼西亚`
-- Category: `Otomotif`
+- Category: `Otomotif` by default, but overrideable per run
 - Minimum monthly sales: `50`
 - Minimum price: `80000 IDR`
 - Listing age: `recent half year`
@@ -40,7 +40,7 @@ Unless the user overrides them, use these defaults:
 - `site`: `印度尼西亚`
 - `country_code`: `2`
 - `category_tree_country`: `Indonesia`
-- `category`: `Otomotif`
+- `category`: `Otomotif` by default
 - `min_monthly_sales`: `50`
 - `min_price_idr`: `80000`
 - `min_rating`: `4.7`
@@ -53,6 +53,10 @@ The date range must always come from the user input for that run:
 
 - `start_date`
 - `end_date`
+
+The category is also runtime-configurable:
+
+- `category_keyword`
 
 For non-Indonesia sites, also provide:
 
@@ -126,8 +130,10 @@ Quick prompt:
 Use $shopee-id-youying-selector.
 友鹰账号：<账号>
 友鹰密码：<密码>
+站点：菲律宾
+类目：Beauty
 时间范围：2025-09-28 到 2026-03-27
-按件数降序，筛选 Shopee 印尼 Otomotif 类目前10个产品，排除 Shopee Mall 和评分低于 4.7 的商品，导出 Excel。
+按件数降序，筛选前10个产品，排除 Shopee Mall 和评分低于 4.7 的商品，导出 Excel。
 ```
 
 Recommended dialog format:
@@ -136,6 +142,8 @@ Recommended dialog format:
 Use $shopee-id-youying-selector.
 友鹰账号：<username>
 友鹰密码：<password>
+站点：菲律宾
+类目：Beauty
 时间范围：2025-09-28 到 2026-03-27
 输出路径：/tmp/result.xlsx
 ```
