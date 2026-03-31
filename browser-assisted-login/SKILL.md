@@ -13,6 +13,7 @@ This skill is designed for Claude Code, Codex, OpenClaw, and similar agent runti
 - inspect and interact with the page
 - wait for the user to finish manual verification
 - reuse session state after success
+- bootstrap from imported browser auth state when direct login is blocked
 
 ## What This Skill Is For
 
@@ -117,6 +118,8 @@ For deterministic config matching and handoff state, use:
 - `scripts/login_state.py`
 - `scripts/run_login.py`
 
+Read [references/auth-state.md](references/auth-state.md) when a site blocks the login flow but you can import an existing authenticated browser state.
+
 ## Human-In-The-Loop Rules
 
 When a verification step appears:
@@ -211,6 +214,7 @@ python3 scripts/run_login.py start \
   --username "your_username" \
   --password "your_password" \
   --state-file /tmp/browser-login-state.json \
+  --browser-state-path /tmp/auth.json \
   --headed
 ```
 
@@ -230,6 +234,7 @@ The runner returns a JSON object with:
 - `site`: matched site id
 - `session_name`: browser session key used for reuse
 - `reused_session`: whether the runner detected an already-authenticated session
+- `used_browser_state`: whether the runner was started with an imported auth state file
 - `message`: short human-readable result
 
 By default the runner uses a domain-scoped session name from site config, so future runs on the same site can reuse prior login state.

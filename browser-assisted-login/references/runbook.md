@@ -11,6 +11,8 @@ Use this runbook when you want to operate the skill quickly without rethinking t
 5. After the user replies `好了` or `done`, run `resume`.
 6. If `status=authenticated`, continue to the user's real task.
 
+If direct login is blocked by anti-bot verification, use the imported auth-state path in `references/auth-state.md`.
+
 ## Menglar Example
 
 Start:
@@ -22,6 +24,7 @@ python3 skills/browser-assisted-login/scripts/run_login.py start \
   --username "<username>" \
   --password "<password>" \
   --state-file /tmp/menglar-login-state.json \
+  --browser-state-path /tmp/menglar-auth.json \
   --session-name login-menglar-shopee \
   --headed
 ```
@@ -48,6 +51,7 @@ python3 skills/browser-assisted-login/scripts/run_login.py start \
   --username "<username>" \
   --password "<password>" \
   --state-file /tmp/shopee-id-login-state.json \
+  --browser-state-path /tmp/shopee-id-auth.json \
   --session-name login-shopee-co-id \
   --headed
 ```
@@ -88,3 +92,4 @@ Prefer these messages:
 - Reuse the same `--session-name` for the same site to keep login state.
 - Use a new `--session-name` when you want a fresh login test.
 - Keep state files in `/tmp` unless the user asks for a persistent location.
+- Keep imported browser auth files in `/tmp` unless the user asks otherwise.
