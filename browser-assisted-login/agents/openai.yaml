@@ -1,0 +1,4 @@
+interface:
+  display_name: "Browser Assisted Login"
+  short_description: "真实浏览器登录助手，支持验证码/短信/扫码的人机接力"
+  default_prompt: "Use $browser-assisted-login to open a real browser, complete as much of the website login flow as possible, pause for any human verification step, then resume and save reusable session state."

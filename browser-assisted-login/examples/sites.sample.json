@@ -1,0 +1,106 @@
+{
+  "sites": [
+    {
+      "id": "menglar_shopee",
+      "session_name": "login-menglar-shopee",
+      "match": [
+        "shopee.menglar.com"
+      ],
+      "login_url": "https://shopee.menglar.com/workbench/login?urlCode=1637911731749",
+      "selectors": {
+        "mode_switch": [
+          ".loginCheck p:nth-of-type(2)"
+        ],
+        "username": [
+          "input[placeholder*='手机号']"
+        ],
+        "password": [
+          "input[placeholder*='密码']"
+        ],
+        "submit": [
+          "button.el-button.el-button--primary.el-button--small"
+        ]
+      },
+      "success_checks": [
+        {
+          "url_not_contains": "/workbench/login"
+        },
+        {
+          "text_exists": "产品分析"
+        }
+      ],
+      "blocker_checks": [
+        {
+          "text_exists": "请点击"
+        },
+        {
+          "text_exists": "验证码"
+        },
+        {
+          "selector_exists": "#tcaptcha_iframe"
+        }
+      ],
+      "post_login_hints": {
+        "landing_text": [
+          "产品分析",
+          "店铺分析",
+          "选品导航"
+        ]
+      }
+    },
+    {
+      "id": "shopee_co_id",
+      "session_name": "login-shopee-co-id",
+      "match": [
+        "shopee.co.id"
+      ],
+      "login_url": "https://shopee.co.id/buyer/login",
+      "selectors": {
+        "username": [
+          "input[placeholder='Phone number / Username / Email']",
+          "input[name='loginKey']"
+        ],
+        "password": [
+          "input[placeholder='Password']",
+          "input[type='password']"
+        ],
+        "submit": [
+          "text=LOG IN",
+          "button[type='submit']"
+        ]
+      },
+      "success_checks": [
+        {
+          "url_not_contains": "/buyer/login"
+        },
+        {
+          "text_exists": "Notifikasi"
+        },
+        {
+          "text_exists": "Akun Saya"
+        }
+      ],
+      "blocker_checks": [
+        {
+          "text_exists": "captcha"
+        },
+        {
+          "text_exists": "verification"
+        },
+        {
+          "text_exists": "OTP"
+        },
+        {
+          "text_exists": "QR"
+        }
+      ],
+      "post_login_hints": {
+        "landing_text": [
+          "我的",
+          "Me",
+          "Notifikasi"
+        ]
+      }
+    }
+  ]
+}
