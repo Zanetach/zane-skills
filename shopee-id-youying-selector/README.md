@@ -1,4 +1,4 @@
-# shopee-id-youying-selector
+# youying-selector
 
 Native AI skill for selecting Shopee site products from YouYing Data. Default site: Indonesia.
 
